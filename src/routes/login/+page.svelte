@@ -44,7 +44,7 @@
 		<label><input type='password' bind:value={password} placeholder='Password'></label>
 		<footer>
 			<!-- We have to do it twice bc Svelte can't handle one {} doing both, also we only check passwd.len in 2nd bc it has priority-->
-			<button on:click={checkCredentials} class:success='{username && password}' disabled='{!username || password.length < 8}'>Submit</button>
+			<button on:click={checkCredentials} class:success='{username !=='' && password !==''}' disabled='{username==='' || password.length < 8}'>Submit</button>
 		</footer>
 	</article>
 </div>
