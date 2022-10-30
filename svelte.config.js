@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -9,19 +9,18 @@ const config = {
 		postcss: true,
 		replace: [
 			[/WROOT/g,process.env.NODE_ENV==='production'?'https://24.99.231.214':'http://10.0.0.2:5173'],
-			[/CMPNTS/g,process.cwd() + '/src/components/'],
-			[/LIB/g,process.cwd() + '/src/lib/'],
+			[/CMPNTS/g,process.cwd() + '/src/components/']
 		]
 	})],
 
 	kit: {
 		adapter: adapter({
-			out: 'public'
-			/*pages: 'build',
+			pages: 'build',
 			assets: 'build',
-			fallback: null
-			//for static */
-		}),
+			fallback: null,
+			precompress: false,
+			strict: true
+		})
 	}
 };
 
