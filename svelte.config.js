@@ -10,7 +10,7 @@ const config = {
 		replace: [
 			[/WROOT/g,process.env.NODE_ENV==='production'?'https://24.99.231.214':'http://10.0.0.2:5173'],
 			[/CMPNTS/g,process.cwd() + '/src/components/'],
-			[/LIB/g,process.cwd() + '/src/lib/']
+			[/LIB/g,process.cwd() + '/src/lib/'],
 		]
 	})],
 

@@ -23,7 +23,7 @@
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
-		"svelte-preprocess": "^4.10.6",
+		"svelte-preprocess": "^4.10.7",
 		"tslib": "^2.3.1",
 		"typescript": "^4.7.4",
 		"vite": "^3.1.0"
@@ -35,7 +35,6 @@
 		"@zxcvbn-ts/core": "^2.1.0",
 		"bcryptjs": "^2.4.3",
 		"lmdbx": "^0.5.0",
-		"picnic": "^7.1.0",
-		"pm2": "^5.2.2"
+		"picnic": "^7.1.0"
 	}
 }
