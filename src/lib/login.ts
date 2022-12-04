@@ -21,7 +21,7 @@ function askVerify(salt,username,password) {
 		})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log('Login Result success!',data)
+			console.log('Login Result from Server: ',data)
 			if (data.rz) {
 				goto('/home')
 			} else {

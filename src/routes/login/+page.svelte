@@ -5,4 +5,4 @@
 		checkCredentials(username,password)
 	}
 </script>
-<Credentials check={check} title='Please Sign In!'/>
+<Credentials check={check} title='Log In!'/>

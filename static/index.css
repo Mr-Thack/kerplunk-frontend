@@ -3,10 +3,8 @@ nav {
     position: relative;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background: rgba(200,225,255,0.75); 
 }
-
 .fullscreen
 {
     position:fixed;
@@ -37,7 +35,6 @@ nav {
 
 #chat-b { background:#a0144b }
 #login-b { background:#9c0a8b }
-#signup-b { background:#09c7a0 }
 
 #chat
 { 
@@ -50,7 +47,7 @@ nav {
     height: 65%;
     width: 80%;
     border: 1px solid #57a757;
-    overflow: auto;
+    overflow: none;
     border-radius: 4px;
     border-bottom: 4px solid #57a757;
 }
@@ -65,4 +62,3 @@ nav {
     border-radius: 4px;
 }
 #chat li:nth-child(odd) p { background: #09c7a0 }
-

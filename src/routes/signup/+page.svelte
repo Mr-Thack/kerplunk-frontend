@@ -20,4 +20,4 @@
 
 </script>
 <PasswordModal calc={calc} password={password} />
-<Credentials check={check} title='Please Fill It In!'/>  
+<Credentials check={check} title='Sign Up!'/>  

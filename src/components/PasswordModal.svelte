@@ -1,4 +1,5 @@
 <script type='ts'>
+	import { page } from '$app/stores'; 
 	//calculation of the passwod's strength
 	export let calc;
 	export let password: String;
@@ -28,10 +29,16 @@
 			<!-- calc.error is a string. If it's empty there is no error and it's evaluated as false. -->
 			<h5>tl;dr: <span class='label' class:success='{calc.error==false}' class:error='{calc.error!=false}'>{(calc.error==false)?'The Server Accepts!':'Error: ' + calc.error}</span></h5>
 		</section>
-    <footer>
-      <label for="passwdModal" class="button dangerous">
-        OK
-      </label>
+		<footer>
+			<label for="passwdModal" class="button" class:dangerous='{calc.error!=false}' class:success='{calc.error==false}'>
+				<!-- if false, there's actually no error, so it works backwards -->
+				{#if !calc.error}
+					<a href='/login'>Yay!</a>
+				{/if}
+				{#if calc.error}
+					Try Again?
+				{/if}
+			</label>
     </footer>
   </article>
 </div>

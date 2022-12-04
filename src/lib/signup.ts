@@ -21,7 +21,7 @@ function checkCredentials(username,password) {
 		score: c.score,
 		warning: c.feedback.warning,
 		suggestions: c.feedback.suggestions,
-		error: ''
+		error: 'Password Not Secure'
 	}
 	return calc;
 }
