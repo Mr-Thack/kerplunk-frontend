@@ -1,5 +1,5 @@
 <script>
-  let navs = [['chat','Chat!'],['login','Login!']];
+  let navs = [['chatrooms','Chat!'],['login','Login!']];
 </script>
 <nav>
   <a href="/" style="margin-left:0.5em">

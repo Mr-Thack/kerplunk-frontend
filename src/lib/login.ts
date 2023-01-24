@@ -1,34 +1,21 @@
-import bcrypt from 'bcryptjs'
-import { goto } from '$app/navigation'
-import {endpoint} from '$library/endpoint'
+import {formdata_post} from '$library/endpoint'
 
-export default async function checkCredentials(username,password) {
-		fetch(endpoint('Auth') + '?username=' + username + '&password=' + password, {
-			method: 'GET'
-		})
-		.then((response) => response.json())
-		.then((data) => {console.log(data);askVerify(data.salt,username,password)})
-		.catch((error) => {
-			console.log('Checkin: error!', error)
-		});
-}
-
-
-function askVerify(salt,username,password) {
-		const hash = bcrypt.hashSync(password,salt)
-		fetch(endpoint('Auth') + '?username=' + username + '&hash=' + hash, {
-			method: 'GET',
-		})
-		.then((response) => response.json())
-		.then((data) => {
-			console.log('Login Result from Server: ',data)
-			if (data.rz) {
-				goto('/home')
-			} else {
-				alert('Password is Wrong!')
-			}
-		})
-		.catch((error) => {
-			console.log('Login Result error!', error)
-		});
+export default async function checkCredentials(email: string, pwd: string) {
+    const data = {
+        'grant_type': '',
+        // We login with email cuz that doesn't change often
+        'username': email,
+        'password': pwd,
+        'scope': '',
+        'client_id': '',
+        'client_secret': ''
+    };
+    const rez = await formdata_post('login', data);
+    if (!rez.error) {
+        return rez.data.access_token;
+    } else {
+        console.log(rez);
+        alert(`LOGIN ERROR: ${rez.data.detail}`);
+        return false;
+    }
 }

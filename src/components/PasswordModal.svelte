@@ -1,7 +1,6 @@
 <script type='ts'>
-	import { page } from '$app/stores'; 
 	//calculation of the passwod's strength
-	export let calc;
+	export let calc: object;
 	export let password: String;
 </script>
 <div class="modal">

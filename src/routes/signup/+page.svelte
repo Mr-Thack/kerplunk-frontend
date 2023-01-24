@@ -1,21 +1,22 @@
 <script lang='ts'>
-	import { checkSendCredentials } from '$lib/signup'
+	import { checkAndSendCredentials } from '$lib/signup'
 	import PasswordModal from '$components/PasswordModal.svelte'
 	import Credentials from '$components/Credentials.svelte'
 	// We just need to initialize them to avoid errors
 	let password='', calc = {
 		time: '',
-		score:0,
-		suggestions:'',
-		warnings:'',
-		error:''
+		score: 0,
+		suggestions: [],
+		warnings: [],
+		error: ''
 	}
-	
-	async function check(username,p)
+
+	async function check(username: string, p: string, email: string)
 	{
-		//set "global" `password` to local `p` 
-		password=p;
-		calc = await checkSendCredentials(username,password)
+        // We pass this to Credentials (at bottom) To check with
+		password=p;  // we need to set our current password to password returned
+		calc = await checkAndSendCredentials(username, password, email);
+        console.log(calc);
 	}
 
 </script>
