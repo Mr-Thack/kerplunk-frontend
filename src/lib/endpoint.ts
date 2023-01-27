@@ -3,11 +3,20 @@ import { dev } from '$app/environment';
 const headers_json = {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'};
 const headers_form = {'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*'};
 
+
+
+
+
+
+
+
+
 export function endpoint(endpoint: string) {
+    endpoint = '/api/' + endpoint;
     if (dev) {
-        return 'localhost:8000/' + endpoint;
+        return 'http://localhost:8000' + endpoint;
     } else {
-        return '24.99.231.214:8000/' + endpoint;
+        return window.location.origin + endpoint;
     }
 }
 
@@ -27,7 +36,7 @@ async function request(method: string, endPoint: string, hs: HeadersInit, body: 
         reqData.body = body;
     }
     // We're currently using standard HTTP
-    await fetch('http://' + endpoint(endPoint), reqData)
+    await fetch(endpoint(endPoint), reqData)
     .then((res) => {
         rezStatus = res.status;
         if (!res.ok) {
