@@ -29,6 +29,7 @@
             alert('Sign in to a chatroom first!');
             goto('/chatrooms');
         } else {
+            console.log(endpoint('chats'));
             socket = new WebSocket(`ws://${endpoint('chats')}/${$userDataStore.cid}?token=${$userDataStore.token}`);
             socket.onmessage = function(event) {
                 if (!messages.length) {
