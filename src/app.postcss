@@ -1,29 +1,36 @@
+/* Write your global styles here, in PostCSS syntax */
+
 .lightswitch {
-    width: 2.5em;
-    display: inline-block;
-    transition: all .3s;
+	width: 2.5em;
+	display: inline-block;
+	transition: all 0.3s;
 }
 .lightswitch-icon {
-    padding-bottom: 0px;
+	padding-bottom: 0px;
 }
 .dark {
-    > body{background: #101010; color: #FDFDFD}
-    .card {background: #202020;}
+	> body {
+		background: #101010;
+		color: #fdfdfd;
+	}
+	.card {
+		background: #202020;
+	}
 }
 .dark input {
-    background-color: #505050;
-    text: #EEEEEE;
+	background-color: #505050;
+	text: #eeeeee;
 }
-.dark .modal .overlay~* {
-    background: #202020;
+.dark .modal .overlay ~ * {
+	background: #202020;
 }
 .dark #chat {
-    background: #111c15;
+	background: #111c15;
 }
 .dark #chat p {
-        background: #2e503a;
+	background: #2e503a;
 }
 
 .dark nav {
-    background: rgba(0,25,50,0.75);
+	background: rgba(0, 25, 50, 0.75);
 }
