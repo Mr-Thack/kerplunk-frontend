@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@skeletonlabs/skeleton": "^1.6.2",
 		"@sveltejs/adapter-static": "^1.0.0-next.46",
 		"@zxcvbn-ts/core": "^2.1.0",
 		"bcryptjs": "^2.4.3",

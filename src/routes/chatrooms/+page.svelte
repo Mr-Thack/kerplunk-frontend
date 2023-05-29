@@ -4,7 +4,6 @@
     import { onDestroy, onMount } from 'svelte';
     import { goto } from '$app/navigation';
 
-
     async function updateChats() {
         chatrooms = (await get('chats')).data.chatrooms.split(' ').filter((name: string) => name.length != 0);
     };
