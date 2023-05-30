@@ -1,6 +1,6 @@
 <script lang='ts'>
     import { userDataStore } from "$library/stores";
-	import { onMount, onDestroy } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import { get } from "$library/endpoint";
     import { goto } from '$app/navigation';
 

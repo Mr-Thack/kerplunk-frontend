@@ -1,4 +1,4 @@
-<script type='ts'>
+<script lang="ts">
 	import { page } from '$app/stores';
 	let uname = '';
 	let pwd = '';
@@ -7,12 +7,14 @@
 	export let check: (uname: string, pwd: string, email: string) => void;
 	// Title, but we could also put a different prompt
 	export let title: string;
-    function send() {
+  
+	function send() {
 		check(uname, pwd, email)
 	}
-    const condSignup = (email && uname && pwd);
-    const condLogin = (email && pwd);
-    var curcond = ($page.url.pathname == '/signup')? condSignup:condLogin;
+	
+  const condSignup = (email && uname && pwd);
+  const condLogin = (email && pwd);
+  var curcond = ($page.url.pathname == '/signup')? condSignup:condLogin;
 </script>
 <div class='centered'>
 	<article class='card'>

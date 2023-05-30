@@ -1,13 +1,10 @@
-<script lang='ts'>
+<script lang="ts">
 	import checkCredentials from '$lib/login';
 	import Credentials from '$components/Credentials.svelte';
     import { userDataStore } from '$library/stores'
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-
-
-
 
     let check = (uname:string, pwd:string, email:string) => Promise<void>;
 

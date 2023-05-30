@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { checkAndSendCredentials } from '$lib/signup'
 	import PasswordModal from '$components/PasswordModal.svelte'
 	import Credentials from '$components/Credentials.svelte'
