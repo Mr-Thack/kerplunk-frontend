@@ -5,7 +5,7 @@ export async function checkAndSendCredentials(username: string,
                                               password: string,
                                               email: string) {
 	// This will both check (locally) and send the credentials to the server
-    const c = checkCredentials(password);
+  const c = checkCredentials(password);
 	if (c.score === 4) {
 		const rez = await post('signup',
                                  {'uname': username,
@@ -18,7 +18,6 @@ export async function checkAndSendCredentials(username: string,
         }
 	}
 	// activate passwdModal (/routes/signup)
-	document.getElementById('passwdModal').checked = true;
 	return c;
 }
 

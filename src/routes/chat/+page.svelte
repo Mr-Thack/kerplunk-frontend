@@ -3,8 +3,16 @@
     import { userDataStore } from '$library/stores';
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
+    import { falert } from '$library/simpleAlert';
+	
 
-    var input_text = '';
+    let chatbox: HTMLElement, chatInput: HTMLElement;
+    var inputText = '';
+
+    function scrollChatBottom(behavior?: ScrollBehavior): void {
+	      chatbox.scrollTo({ top: chatbox.scrollHeight, behavior });
+    }
+		  
 
     class Message {
         text: string;
@@ -19,15 +27,14 @@
     var messages: Message[] = [];
     
     let socket: WebSocket, 
-        sendMessage: () => void,
-        chatbox: HTMLUListElement;
+        sendMessage: () => void;
 
 
     onMount(() => {
-        chatbox = document.getElementById('chat');
         if (!$userDataStore.token) {
-            alert('Sign in to a chatroom first!');
-            goto('/chatrooms');
+            falert('Sign in to a chatroom first!', () => {
+                goto('/chatrooms')
+            });
         } else {
             console.log(endpoint('chats'));
             socket = new WebSocket(`ws://${endpoint('chats')}/${$userDataStore.cid}?token=${$userDataStore.token}`);
@@ -39,42 +46,68 @@
                     }
                     messages = messages;
                 } else {
-                    messages.push(new Message(event.data, ''));
-                    messages = messages;
+                    messages = [...messages, new Message(event.data, '')]
+                    setTimeout(() => scrollChatBottom('smooth'), 0);
                 }
-                chatbox.scrollTop = chatbox.scrollHeight;
-                console.log(chatbox);
             }
             sendMessage = () => {
-                socket.send(input_text);
-                input_text = '';
+                socket.send(inputText);
+                inputText = '';
             };
-            const input = document.getElementById('chat_input');
-            input.addEventListener('keypress', function(event) {
+            chatInput.addEventListener('keypress', function(event) {
                 console.log(event);
                 if (event.key == "Enter") {
                     event.preventDefault();
                     sendMessage()
                 }
             });
-
             // Auto Scroll to bottom
-            function scrollToBottom() {
+            /*function scrollToBottom() {
                 chatbox.scrollTop = chatbox.scrollHeight;
             }
             const observer = new MutationObserver(scrollToBottom);
             const config = {childList: true};
             observer.observe(chatbox, config);
+            */
         }
     });
  
 </script>
-<ul id='chat'>
-	{#each messages as msg}
-		<li><p>{msg.text}</p></li>
+
+<section bind:this={chatbox}
+    class="w-full max-h-[400px] p-4 overflow-y-auto space-y-4"
+    class:placeholder='{!messages.length}'
+    class:animate-pulse='{!messages.length}'
+    >
+    
+    {#each messages as msg}
+        <div class="grid grid-cols-[auto_1fr] gap-2">
+            <!-- We can add avatars later.... -->
+            <div class="card p-4 variant-soft rounded-tl-none space-y-2">
+                <header class="flex justify-between items-center">
+                    <p class="font-bold">{msg.from}</p>
+                    <!-- add timestamp here -->
+                </header>
+                <p>{msg.text}</p>
+            </div>
+        </div>
     {/each}
-</ul>
+</section>
+
+<div class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token">
+    <textarea
+        bind:this={chatInput}
+        bind:value={inputText}
+        class="bg-transparent border-0 ring-0"
+        name="prompt"
+        placeholder="Message Here..."
+        rows="1"
+    />
+    <button class="variant-filled-primary" on:click={sendMessage}>Send!</button>
+</div>
+<!--
 <div style='margin-top: 1%; margin-left: 15%'>
     <input type='text' id='chat_input' bind:value={input_text} style='width: 75%; margin-right: 1%;'>
     <button on:click={sendMessage}>Send!</button>
 </div>
+-->
