@@ -1,75 +1,114 @@
 <script lang='ts'>
-    import { get, post, patch } from '$library/endpoint';
+  import { get, post, patch } from '$library/endpoint';
 	import { userDataStore } from '$library/stores';
-    import { onDestroy, onMount } from 'svelte';
-    import { goto } from '$app/navigation';
+  import { onDestroy, onMount } from 'svelte';
+  import { goto } from '$app/navigation';
 
-    async function updateChats() {
-        chatrooms = (await get('chats')).data.chatrooms.split(' ').filter((name: string) => name.length != 0);
-    };
+  import { modalStore } from '@skeletonlabs/skeleton';
+  import type { ModalSettings } from '@skeletonlabs/skeleton';
+  import { salert, falert } from '$library/simpleAlert';
+
+  var chatName: string;
+  var chatPwd: string;
+
+  const chatModalName: ModalSettings = {
+    type: 'prompt',
+    title: 'Chatroom Name:',
+    value: '',
+    valueAttr: {
+      type: 'text',
+      minlength: '1',
+      required: true
+    },
+    response: (name: string) => chatName = name 
+  }
+
+  const chatModalPwd: ModalSettings = {
+    type: 'prompt',
+    title: 'Chatroom Password (Leave empty for no password):',
+    value: '',
+    valueAttr: {
+      type: 'text',
+      minlength: '4',
+      required: false
+    },
+    response: (pwd: string) => { chatPwd = pwd; makeRoom(); }
+  }
+
+  async function updateChats() {
+    chatrooms = (await get('chats')).data.chatrooms.split(' ').filter((name: string) => name.length != 0);
+  };
 
 
-    var chatrooms: string[] = [];
-    let updateInterval: NodeJS.Timeout;
-    onMount( async function() {
-        updateChats();
-        updateInterval = setInterval(async function() {
-            await updateChats();
-        }, 5000);
-    });
+  var chatrooms: string[] = [];
+  var updateInterval: number; // setInterval type is number
+  onMount( async function() {
+    updateChats();
+    updateInterval = setInterval(async function() {
+      await updateChats();
+    }, 5000);
+  });
 
-    async function join(room: string) {
-        if (!$userDataStore.token) {
-            console.log($userDataStore);
-            alert('Login First!!');
-        } else {
-            const r = await patch('chats', {}, {'name': room}, $userDataStore.token);
-            if (r.error) {
-                alert(`JOIN ERROR: ${r.data}`);
-            } else {
-                $userDataStore.cid = r.data.cid;
-                goto('/chat');
-            }
-        }
+  async function join(room: string) {
+    if (!$userDataStore.token) {
+      console.log($userDataStore);
+      falert('Login First!!', () => {
+        goto('/login')  
+      });
+    } else {
+      const r = await patch('chats', {}, {'name': room}, $userDataStore.token);
+      if (r.error) {
+        salert(`JOIN ERROR: ${r.data}`);
+      } else {
+        $userDataStore.cid = r.data.cid;
+        goto('/chat');
+      }
     }
+  }
 
+ 
+
+  async function promptRoom() {
+    modalStore.trigger(chatModalName);
+    modalStore.trigger(chatModalPwd);
+
+  }
+
+  async function makeRoom() {
     const data = {
-        name: '',
-        pwd: '',
-        public: false,
-        temp: true
+      name: chatName,
+      pwd: chatPwd,
+      public: (chatPwd === ""),
+      temp: false // [TODO] Rework API  
     }
-    async function makeRoom() {
-        if (!data.name) {
-            alert('Name is Required!!!');
-        } else {
-            const r = await post('chats', data, $userDataStore.token);
-            console.log(r)
-            if (r.error) {
-                alert(`ERROR MAKING: ${r.data}`);
-            } else {
-                alert('All\'s well! Should show up soon!')
-            }
-        }
-    }   
-    onDestroy(() => {
-        clearInterval(updateInterval);
-    });
+    console.log(data);
+    const r = await post('chats', data, $userDataStore.token);
+    console.log(r)
+    if (r.error) {
+      salert(`ERROR MAKING: ${r.data}`);
+    } else {
+      salert('All\'s well! Should show up soon!')
+    }
+ }   
+  
+  onDestroy(() => {
+    clearInterval(updateInterval);
+  });
+
 </script>
 
-<center><label for='openRoom' class='button'>Make Your Own!</label></center>
-<center><h1>Chatrooms:</h1></center>
+<button class='btn mb-10 text-center variant-filled' on:click={promptRoom}>Make Your Own!</button>
+<h1 class="h1 text-center mb-5">Chatrooms:</h1>
 
 {#if chatrooms.length}
-    {#each chatrooms as chatroom}
-        <center>
-            <button style='margin-top: 3em; width: 25%;' on:click={() => join(chatroom)}>Join {chatroom}</button>
-        </center>
-    {/each}
+  {#each chatrooms as chatroom}
+    <button class="btn mt-3 w-25" on:click={() => join(chatroom)}>Join {chatroom}</button>
+  {/each}
 {:else}
-    <center><h2>There aren't any yet! Make one!</h2></center>
+  <h2 class="h2 text-center">There aren't any yet! Make one!</h2>
 {/if}
 
+<!--
 <div class='modal'>
     <input id='openRoom' type='checkbox' />
     <label for='openRoom' class='overlay' />
@@ -98,3 +137,4 @@
             Create!
         </label>
 </div>
+-->
