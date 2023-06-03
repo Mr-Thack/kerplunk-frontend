@@ -75,7 +75,7 @@
 </script>
 
 <section bind:this={chatbox}
-    class="w-full max-h-[400px] p-4 overflow-y-auto space-y-4"
+    class="w-full max-h-[600px] p-4 overflow-y-auto space-y-4"
     class:placeholder='{!messages.length}'
     class:animate-pulse='{!messages.length}'
     >
